@@ -1,0 +1,16 @@
+version: "3"
+
+volumes:
+  nutrition_mongodb_data: {}
+  db: {}
+
+services:
+  nutrition-pg-db:
+    image: postgres
+    restart: always
+    env_file:
+      - ./nutrition/.env
+    ports:
+      - 5434:5432
+    volumes:
+      - db:/var/lib/postgresql/data
