@@ -1,0 +1,165 @@
+syntax = "proto3";
+
+
+
+package nutrition_v1;
+
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/wrappers.proto";
+
+
+option go_package = "github.com/gerathewitcher/healthstyle/nutrition/pkg/nutrition_v1;nutrition_v1";
+
+
+
+service NutritionV1 {
+    rpc CreateNutritionPlan(CreateNutritionPlanRequest) returns (CreateNutritionPlanResponse);
+    rpc CreateMeal(CreateMealRequest) returns (CreateMealResponse);
+    rpc CreateMealFood(CreateMealFoodRequest) returns (CreateMealFoodResponse);
+    rpc GetFoods(GetFoodsRequest) returns (GetFoodsResponse);
+    rpc CreateFood(CreateFoodRequest) returns (CreateFoodResponse);
+    rpc UpdateFood(UpdateFoodRequest) returns (google.protobuf.Empty);
+
+    rpc GetNutritionPlan(GetNutritionPlanRequest) returns (GetNutritionPlanResponse);
+    rpc GetNutritionPlans(GetNutritionPlansRequest) returns (GetNutritionPlansResponse);
+}
+
+message GetFoodsRequest{
+    uint64 offset = 1;
+    uint64 limit = 2;
+}
+
+message GetFoodsResponse{
+    uint64 total = 1;
+    repeated Food foods = 2;
+}
+
+message GetNutritionPlansRequest{
+    uint64 offset = 1;
+    uint64 limit = 2;
+}
+
+message GetNutritionPlansResponse{
+    uint64 total = 1;
+    repeated NutritionPlanShort plans = 2;
+
+}
+
+message GetNutritionPlanRequest{
+    string id = 1;
+}
+
+message GetNutritionPlanResponse{
+    NutritionPlan plan = 1;
+}
+
+
+
+message CreateFoodRequest{
+    string name = 1;
+    google.protobuf.UInt32Value calorie = 2;
+    google.protobuf.UInt32Value proteins = 3;
+    google.protobuf.UInt32Value fats = 4;
+    google.protobuf.UInt32Value carbs = 5;
+}
+message UpdateFoodRequest{
+    string id = 1;
+    google.protobuf.StringValue name = 2;
+    google.protobuf.UInt32Value calorie = 3;
+    google.protobuf.UInt32Value proteins = 4;
+    google.protobuf.UInt32Value fats = 5;
+    google.protobuf.UInt32Value carbs = 6;
+}
+
+
+message CreateFoodResponse{
+    string id = 1;
+}
+
+message CreateMealFoodRequest{
+    string meal_id = 1;
+    string food_id = 2;
+    google.protobuf.UInt32Value food_weight = 3;
+    
+}
+
+message CreateMealFoodResponse{
+    string id = 1;
+}
+
+
+
+message CreateNutritionPlanRequest{
+    string name = 1;
+    google.protobuf.Timestamp day  = 2;
+}
+
+
+message CreateNutritionPlanResponse {
+    string id = 1; 
+}
+
+
+message CreateMealRequest {
+    string plan_id = 1;
+    string name = 2;
+    google.protobuf.Timestamp meal_time = 3;
+
+}
+
+message CreateMealResponse {
+    string id = 1; 
+}
+
+message NutritionPlan{
+    string id = 1;
+    string name = 2;
+    google.protobuf.Timestamp day = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+    repeated Meal meals = 6;
+
+
+}
+
+message NutritionPlanShort{
+    string id = 1;
+    string name = 2;
+    google.protobuf.Timestamp day = 3;
+    google.protobuf.Timestamp created_at = 4;
+    google.protobuf.Timestamp updated_at = 5;
+
+}
+
+
+message Food {
+    string id = 1;
+    string name = 2;
+    google.protobuf.UInt32Value calorie = 3;
+    google.protobuf.UInt32Value proteins = 4;
+    google.protobuf.UInt32Value fats = 5;
+    google.protobuf.UInt32Value carbs = 6;
+    google.protobuf.Timestamp created_at = 7;
+    google.protobuf.Timestamp updated_at = 8;
+}
+
+message Meal {
+    string id = 1;
+    string name = 2;
+    google.protobuf.Timestamp time = 3;
+    repeated MealFood meal_foods = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
+
+message MealFood {
+    string id = 1;
+    Food food = 3;
+    google.protobuf.UInt32Value  weight = 4;
+    google.protobuf.Timestamp created_at = 5;
+    google.protobuf.Timestamp updated_at = 6;
+}
+
+
